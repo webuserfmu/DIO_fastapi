@@ -16,7 +16,7 @@ services: # Esta linha deve estar sem indentação, no mesmo nível de 'version'
       timeout: 5s
       retries: 5
 
-  backend: # 'backend' deve ter 2 espaços de indentação em relação a 'services'
+  backend:
     build: ./backend
     ports:
       - "8000:8000"
@@ -27,5 +27,5 @@ services: # Esta linha deve estar sem indentação, no mesmo nível de 'version'
       DATABASE_URL: postgresql+asyncpg://workout:workout@db:5432/workout
     command: ["python", "-m", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
 
-volumes: # Esta linha deve estar sem indentação, no mesmo nível de 'version' e 'services'
-  pg_data: # 'pg_data' deve ter 2 espaços de indentação em relação a 'volumes'
+volumes:
+  pg_data:
