@@ -1,0 +1,8 @@
+apagar todos os containers do docker
+docker-compose down -v --rmi all
+
+limpar a cache
+docker builder prune
+
+rebuild 
+docker-compose up --build

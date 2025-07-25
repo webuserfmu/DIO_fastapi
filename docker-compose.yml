@@ -1,0 +1,31 @@
+services: # Esta linha deve estar sem indentação, no mesmo nível de 'version'
+  db: # 'db' deve ter 2 espaços de indentação em relação a 'services'
+    image: postgres:13
+    restart: always
+    environment:
+      POSTGRES_DB: workout
+      POSTGRES_USER: workout
+      POSTGRES_PASSWORD: workout
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck: 
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend: # 'backend' deve ter 2 espaços de indentação em relação a 'services'
+    build: ./backend
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql+asyncpg://workout:workout@db:5432/workout
+    command: ["python", "-m", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+
+volumes: # Esta linha deve estar sem indentação, no mesmo nível de 'version' e 'services'
+  pg_data: # 'pg_data' deve ter 2 espaços de indentação em relação a 'volumes'
